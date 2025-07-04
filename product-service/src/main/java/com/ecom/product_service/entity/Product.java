@@ -7,11 +7,11 @@ import java.time.LocalDateTime;
 
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-
+@ToString
 public class Product {
 
     @Id

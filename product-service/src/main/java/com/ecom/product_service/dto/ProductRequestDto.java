@@ -12,4 +12,5 @@ public class ProductRequestDto {
     private Integer stockQuantity;
 
     private String categoryId;
+
 }
