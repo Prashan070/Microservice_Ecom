@@ -1,5 +1,6 @@
 package com.ecom.product_service.entity;
 
+import com.ecom.product_service.config.IdGenerator;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,6 @@ import java.time.LocalDateTime;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String productId;
     private String name;
     private String description;
@@ -35,6 +35,10 @@ public class Product {
         this.inStock = this.stockQuantity != null && this.stockQuantity > 0;
         if (createdAt == null) createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
+
+        if (this.productId == null) {
+            this.productId = "prod-" + String.format("%05", IdGenerator.generateProductId());
+        }
 
     }
 

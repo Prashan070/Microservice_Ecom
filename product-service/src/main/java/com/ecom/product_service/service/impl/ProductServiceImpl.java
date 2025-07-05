@@ -4,8 +4,7 @@ import com.ecom.product_service.dto.ProductRequestDto;
 import com.ecom.product_service.dto.ProductResponseDto;
 import com.ecom.product_service.entity.Category;
 import com.ecom.product_service.entity.Product;
-import com.ecom.product_service.mapper.ProductRequestDTOToProduct;
-import com.ecom.product_service.mapper.ProductToProductResponseDTO;
+import com.ecom.product_service.mapper.ProductMapper;
 import com.ecom.product_service.repository.CategoryRepository;
 import com.ecom.product_service.repository.ProductRepository;
 import com.ecom.product_service.service.ProductService;
@@ -34,27 +33,42 @@ public class ProductServiceImpl implements ProductService {
 
         Category category = categoryRepository.findById(productRequestDto.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
-        Product product = ProductRequestDTOToProduct.ProductRequestDTOToProductMapper(productRequestDto);
+        Product product = ProductMapper.ProductRequestDTOToProductMapper(productRequestDto);
         product.setCategory(category);
         Product savedproduct = productRepository.save(product);
-        ProductResponseDto productResponseDto = ProductToProductResponseDTO.ProductToProductResponseDTOMapper(savedproduct);
+        ProductResponseDto productResponseDto = ProductMapper.ProductToProductResponseDTOMapper(savedproduct);
         return productResponseDto;
     }
 
     @Override
     public ProductResponseDto getProductById(String productId) {
-        return null;
+        Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found"));
+        return ProductMapper.ProductToProductResponseDTOMapper(product);
     }
 
     @Override
     public List<ProductResponseDto> getAllProducts() {
         return productRepository.findAll().stream()
-                .map(ProductToProductResponseDTO::ProductToProductResponseDTOMapper).toList();
+                .map(ProductMapper::ProductToProductResponseDTOMapper).toList();
     }
 
     @Override
     public ProductResponseDto updateProduct(String productId, ProductRequestDto productRequestDto) {
-        return null;
+
+        Product existingProduct = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Not Found"));
+
+        Category category = categoryRepository.findById(productRequestDto.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+
+        existingProduct.setName(productRequestDto.getName());
+        existingProduct.setDescription(productRequestDto.getDescription());
+        existingProduct.setPrice(productRequestDto.getPrice());
+        existingProduct.setStockQuantity(productRequestDto.getStockQuantity());
+        existingProduct.setCategory(category);
+
+        Product updatedProduct = productRepository.save(existingProduct);
+        return ProductMapper.ProductToProductResponseDTOMapper(updatedProduct);
     }
 
     @Override
@@ -63,7 +77,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         product.setStockQuantity(stockQuantity);
         productRepository.save(product);
-        return ProductToProductResponseDTO.ProductToProductResponseDTOMapper(product);
+        return ProductMapper.ProductToProductResponseDTOMapper(product);
     }
 
 }
