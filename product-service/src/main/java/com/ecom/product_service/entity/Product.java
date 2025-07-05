@@ -37,7 +37,7 @@ public class Product {
         updatedAt = LocalDateTime.now();
 
         if (this.productId == null) {
-            this.productId = "prod-" + String.format("%05", IdGenerator.generateProductId());
+            this.productId = "prod-" + String.format("%05d", IdGenerator.generateProductId());
         }
 
     }
