@@ -53,14 +53,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDto updateCategoryById(String categoryId, CategoryRequestDto categoryRequestDto) {
         Category savedCategory = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("No Found"));
-        Category category = CategoryMapper.CategoryRequestDTOToCategoryMapper(categoryRequestDto);
-        categoryRepository.save(category);
-        return null;
+        savedCategory.setName(categoryRequestDto.getName());
+        savedCategory.setDescription(categoryRequestDto.getDescription());
+        Category updatedCategory = categoryRepository.save(savedCategory);
+        return CategoryMapper.CategoryToCategoryResponseDTOMapper(updatedCategory);
     }
 
     @Override
-    public void deleteCategoryById(String categoryId) {
-
+    public String deleteCategoryById(String categoryId) {
+        categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException("Not Found"));
+        categoryRepository.deleteById(categoryId);
+        return "Deleted";
     }
 
 
@@ -69,7 +72,7 @@ public class CategoryServiceImpl implements CategoryService {
         CategoryWithProductsDto categoryWithProductsDto = new CategoryWithProductsDto();
         categoryWithProductsDto.setCategoryId(category.getCategoryId());
         categoryWithProductsDto.setName(category.getName());
-        categoryWithProductsDto.setDiscription(category.getDescription());
+        categoryWithProductsDto.setDescription(category.getDescription());
         categoryWithProductsDto.setProduct(productList.stream().map(ProductMapper::ProductToProductResponseDTOMapper).toList());
         return categoryWithProductsDto;
     }

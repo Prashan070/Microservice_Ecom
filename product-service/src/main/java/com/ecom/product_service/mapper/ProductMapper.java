@@ -9,9 +9,9 @@ public class ProductMapper {
     public static Product ProductRequestDTOToProductMapper(ProductRequestDto productRequestDto) {
         Product product = new Product();
         product.setName(productRequestDto.getName());
-        product.setDescription(product.getDescription());
-        product.setPrice(product.getPrice());
-        product.setStockQuantity(product.getStockQuantity());
+        product.setDescription(productRequestDto.getDescription());
+        product.setPrice(productRequestDto.getPrice());
+        product.setStockQuantity(productRequestDto.getStockQuantity());
         return product;
     }
 

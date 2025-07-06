@@ -33,10 +33,15 @@ public class ProductServiceImpl implements ProductService {
 
         Category category = categoryRepository.findById(productRequestDto.getCategoryId())
                 .orElseThrow(() -> new RuntimeException("Category not found"));
+
         Product product = ProductMapper.ProductRequestDTOToProductMapper(productRequestDto);
+
         product.setCategory(category);
+
         Product savedproduct = productRepository.save(product);
+
         ProductResponseDto productResponseDto = ProductMapper.ProductToProductResponseDTOMapper(savedproduct);
+
         return productResponseDto;
     }
 
@@ -78,6 +83,13 @@ public class ProductServiceImpl implements ProductService {
         product.setStockQuantity(stockQuantity);
         productRepository.save(product);
         return ProductMapper.ProductToProductResponseDTOMapper(product);
+    }
+
+    @Override
+    public String deleteProduct(String productId) {
+        productRepository.findById(productId).orElseThrow(()->new RuntimeException("not found"));
+        productRepository.deleteById(productId);
+        return "Deleted";
     }
 
 }

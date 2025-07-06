@@ -11,5 +11,5 @@ public interface CategoryService {
     CategoryWithProductsDto getCategoryById(String categoryId);
     List<CategoryWithProductsDto> getAllCategories();
     CategoryResponseDto updateCategoryById(String categoryId, CategoryRequestDto categoryRequestDto);
-    void deleteCategoryById(String categoryId);
+    String deleteCategoryById(String categoryId);
 }

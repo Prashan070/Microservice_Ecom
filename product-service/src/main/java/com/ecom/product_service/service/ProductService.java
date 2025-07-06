@@ -12,7 +12,5 @@ public interface ProductService {
     List<ProductResponseDto> getAllProducts();
     ProductResponseDto updateProduct(String productId, ProductRequestDto productRequestDto);
     ProductResponseDto updateStock (String productId,Integer stockQuantity);
-
-
-
+    String deleteProduct(String productId);
 }

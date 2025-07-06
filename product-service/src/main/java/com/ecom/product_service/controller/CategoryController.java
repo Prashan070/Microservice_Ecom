@@ -35,4 +35,15 @@ public class CategoryController {
         return new ResponseEntity<>(categoryService.getCategoryById(categoryId), HttpStatus.OK);
     }
 
+    @DeleteMapping("/{categoryId}")
+    public  ResponseEntity<String> deleteCategoryById(@PathVariable String categoryId){
+        return new ResponseEntity<>(categoryService.deleteCategoryById(categoryId),HttpStatus.OK);
+    }
+
+    @PutMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponseDto> updateCategoryById(@PathVariable String categoryId, @RequestBody CategoryRequestDto categoryRequestDto){
+        return new ResponseEntity<>(categoryService.updateCategoryById(categoryId,categoryRequestDto), HttpStatus.OK);
+    }
+
+
 }
